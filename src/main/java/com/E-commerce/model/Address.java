@@ -1,12 +1,13 @@
-public final Address adress{
-     private final String country;
+public final class Address{
+
+    private final String country;
     private final String region;
     private final String acronym;
     private final String city;
     private final String streetName;
     private final String streetNumber;
 
-    private Address(final @NotNull String country,final @NotNull String region,final @NotNull String acronym,final @NotNull String city,final @NotNull String streetName,final @NotNull String streetNumber){
+    private Address(final  String country,final String region,final String acronym,final String city,final String streetName,final String streetNumber){
         this.country = country;
         this.region = region;
         this.acronym = acronym;
@@ -14,27 +15,9 @@ public final Address adress{
         this.streetName = streetName;
         this.streetNumber = streetNumber;
     }
-    public static Address of(final String country,final String region,final String acronym,final String city,final String streetName,final String streetNumber){
-        if (country == null || country.isBlank()) {
-            throw new InvalidAddressException("ERROR_COUNTRY_NAME", "Country cannot be null or empty");
-        }
-        if (region == null || region.isBlank()) {
-            throw new InvalidAddressException("ERROR_REGION_NAME", "Region cannot be null or empty");
-        }
-        if (acronym == null || acronym.isBlank()) {
-            throw new InvalidAddressException("ERROR_ACRONYM_NAME", "Acronym cannot be null or empty");
-        }
-        if (city == null || city.trim().isBlank()) {
-            throw new InvalidAddressException("ERROR_CITY_NAME", "City cannot be null or empty");
-        }
-        if (streetName == null || streetName.isBlank()) {
-            throw new InvalidAddressException("ERROR_STREET_NAME", "Street Name cannot be null or empty");
-        }
-        if (streetNumber == null || streetNumber.isBlank()) {
-            throw new InvalidAddressException("ERROR_STREET_NUMBER", "Street Number cannot be null or empty");
-        }
-
-       return new Address(country, region, acronym, city, streetName, streetNumber);
+    public static Address create(final String country,final String region,final String acronym,final String city,final String streetName,final String streetNumber){
+        validateFields(country, region, acronym, city, streetName, streetNumber);
+        return new Address(country, region, acronym, city, streetName, streetNumber);
     }
 
     public String getCountry() {
@@ -57,7 +40,18 @@ public final Address adress{
         return streetNumber;
     }
 
-     @Override
+    private static void validateFields(final @NotNull String country,final @NotNull String region,final @NotNull String acronym,final @NotNull String city,final @NotNull String streetName,final @NotNull String streetNumber) {
+        if (country.isBlank()) throw new InvalidArgumentException("Country is required");
+        if (region.isBlank()) throw new InvalidArgumentException("Region is required");
+        if (acronym.isBlank()) throw new InvalidArgumentException("Acronym is required");
+        if (city.isBlank()) throw new InvalidArgumentException("City is required");
+        if (streetName.isBlank())  throw new InvalidArgumentException("Street Name is required");
+        if (streetNumber.isBlank()) throw new InvalidArgumentException("Street Number is required");
+    }
+
+
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Address)) return false;
