@@ -1,3 +1,8 @@
+package com.Ecommerce.model;
+
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum Category{
     ELECTRONICS(1, "Electronic devices and gadgets"),
     COMPUTERS(2, "Laptops, desktops, and computer accessories"),

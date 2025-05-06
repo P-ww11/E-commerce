@@ -1,5 +1,7 @@
+package com.Ecommerce.exception;
+
 public class EcommerceException extends RuntimeException{
-    private final String errorCode
+    private final String errorCode;
 
     public EcommerceException(String errorCode, String message){
         super(validateMessage(message));
@@ -7,14 +9,14 @@ public class EcommerceException extends RuntimeException{
     }
 
 
-    private String validateErrorCode(String errorCode){
+    private static String validateErrorCode(String errorCode){
         if(errorCode == null || errorCode.trim().isEmpty()){
             throw new IllegalArgumentException("Error code cannot be null or empty");
         }
         return errorCode;
     }
 
-    private String validateMessage(String message){
+    private static  String validateMessage(String message){
         if(message == null || message.trim().isEmpty()){
             throw new IllegalArgumentException("Error message cannot be null or empty");
         }
