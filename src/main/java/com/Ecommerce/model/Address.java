@@ -1,10 +1,9 @@
 package com.Ecommerce.model;
 
 import static java.util.Objects.hash;
+import org.jetbrains.annotations.NotNull;
 
-import jakarta.validation.constraints.NotNull;
-
-public final class Address{
+public final class Address {
 
     private final String country;
     private final String region;
@@ -13,25 +12,27 @@ public final class Address{
     private final String streetName;
     private final String streetNumber;
 
-    private Address(final  String country,final String region,final String acronym,final String city,final String streetName,final String streetNumber){
-        this.country = country;
-        this.region = region;
-        this.acronym = acronym;
-        this.city = city;
-        this.streetName = streetName;
-        this.streetNumber = streetNumber;
+    private Address(Builder builder) {
+        this.country = builder.country;
+        this.region = builder.region;
+        this.acronym = builder.acronym;
+        this.city = builder.city;
+        this.streetName = builder.streetName;
+        this.streetNumber = builder.streetNumber;
     }
-    public static Address create(final @NotNull String country,final @NotNull String region,final @NotNull String acronym,final @NotNull String city,final @NotNull String streetName,final @NotNull String streetNumber){
-        validateFields(country, region, acronym, city, streetName, streetNumber);
-        return new Address(country, region, acronym, city, streetName, streetNumber);
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getCountry() {
         return this.country;
     }
+
     public String getRegion() {
         return this.region;
     }
+
     public String getAcronym() {
         return this.acronym;
     }
@@ -39,23 +40,68 @@ public final class Address{
     public String getCity() {
         return this.city;
     }
+
     public String getStreetName() {
         return this.streetName;
     }
+
     public String getStreetNumber() {
         return this.streetNumber;
     }
 
-    private static void validateFields(final String country,final String region,final String acronym,final String city,final String streetName,final String streetNumber) {
-        if (country.isBlank()) throw new IllegalArgumentException("Country is required");
-        else if (region.isBlank()) throw new IllegalArgumentException("Region is required");
-        else if (acronym.isBlank()) throw new IllegalArgumentException("Acronym is required");
-        else if (city.isBlank()) throw new IllegalArgumentException("City is required");
-        else if (streetName.isBlank())  throw new IllegalArgumentException("Street Name is required");
-        else if (streetNumber.isBlank()) throw new IllegalArgumentException("Street Number is required");
+    private static void validateFields(final String country, final String region, final String acronym,
+                                       final String city, final String streetName, final String streetNumber) {
+        Validator.requireNonBlank(country, "Country");
+        Validator.requireNonBlank(region, "Region");
+        Validator.requireNonBlank(acronym, "Acronym");
+        Validator.requireNonBlank(city, "City");
+        Validator.requireNonBlank(streetName, "StreetName");
+        Validator.requireNonBlank(streetNumber, "StreetNumber");
     }
 
+    public static class Builder {
+        private String country;
+        private String region;
+        private String acronym;
+        private String city;
+        private String streetName;
+        private String streetNumber;
 
+        public Builder country(String country) {
+            this.country = country;
+            return this;
+        }
+
+        public Builder region(String region) {
+            this.region = region;
+            return this;
+        }
+
+        public Builder acronym(String acronym) {
+            this.acronym = acronym;
+            return this;
+        }
+
+        public Builder city(String city) {
+            this.city = city;
+            return this;
+        }
+
+        public Builder streetName(String streetName) {
+            this.streetName = streetName;
+            return this;
+        }
+
+        public Builder streetNumber(String streetNumber) {
+            this.streetNumber = streetNumber;
+            return this;
+        }
+
+        public Address build() {
+            validateFields(country, region, acronym, city, streetName, streetNumber);
+            return new Address(this);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -86,5 +132,4 @@ public final class Address{
                 ", streetNumber='" + this.streetNumber + '\'' +
                 '}';
     }
-
 }

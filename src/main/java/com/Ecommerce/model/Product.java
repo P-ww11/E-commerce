@@ -5,8 +5,8 @@ import java.math.RoundingMode;
 import java.util.UUID;
 
 import static java.util.Objects.hash;
+import org.jetbrains.annotations.NotNull;
 
-import jakarta.validation.constraints.NotNull;
 
 public final class Product{
     private final UUID id;
@@ -43,10 +43,9 @@ public final class Product{
     }
 
     private static void validateFields(final String name,final String description,final BigDecimal price){
-        if (name.isBlank() || name.length() <= 3) throw new IllegalArgumentException("Product name must non-blank, and at least 4 characters long");
-        else if (description.isBlank() || description.length() < 5) throw new IllegalArgumentException("Product description must be non-blank, and at least 5 characters long");
-        else if (price.compareTo(BigDecimal.ZERO) <= 0 || price.compareTo(BigDecimal.valueOf(99999)) > 0) throw new IllegalArgumentException("Product price must be greater than 0 and less than or equal to 99,999");
-        
+        Validator.requireMinLength(name, 4,"Name");
+        Validator.requireMinLength(description, 6, "Description");
+        Validator.requireInRange(price, BigDecimal.ZERO,BigDecimal.valueOf(9999), "Price");
     }
 
      @Override

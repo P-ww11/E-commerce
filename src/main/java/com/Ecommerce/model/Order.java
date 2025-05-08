@@ -5,24 +5,22 @@ import java.util.HashSet;
 import static java.util.Objects.hash;
 import java.util.Set;
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
-import jakarta.validation.constraints.NotNull;
 
 public final class Order{
 
     private final UUID id;
-    private final Set<ProductItem> items;
-    private final Cart cart;
+    private final Set<Product> items;
     private final Address address;
     private final Client client;
     
 
     private Order(final UUID id,final Cart cart,final Address address,final Client client){
         this.id = id;
-        this.cart = cart;
         this.address = address;
         this.client = client;
-        this.items = new HashSet<>(cart.getItems());
+        this.items = new HashSet<>(cart.getItems().keySet());
     }
 
     public static Order create(final UUID id,final @NotNull Cart cart,final @NotNull Address address,final @NotNull Client client){
@@ -34,10 +32,6 @@ public final class Order{
         return this.id;
     }
 
-    public Cart getCart() {
-        return this.cart;
-    }
-
     public Address getAddress() {
         return this.address;
     }
@@ -46,7 +40,7 @@ public final class Order{
         return this.client;
     }
 
-    public Set<ProductItem> getItems(){
+    public Set<Product> getItems(){
         if(this.items.isEmpty()){
             throw new IllegalArgumentException("order is empty");
         }
@@ -71,7 +65,6 @@ public final class Order{
         return "Order{" +
                 "id=" + this.id +
                 ", items=" + this.items +
-                ", cart=" + this.cart +
                 ", address=" + this.address +
                 ", client=" + this.client +
                 '}';

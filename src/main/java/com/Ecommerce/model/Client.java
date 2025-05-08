@@ -2,8 +2,9 @@ package com.Ecommerce.model;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import jakarta.validation.constraints.NotNull;
 
 public final class Client {
 
@@ -22,7 +23,7 @@ public final class Client {
         this.birthDate = birthDate;
         this.address = address;
     }
-    public static Client create(final UUID id,final @NotNull String name,final @NotNull String email,final @NotNull String phone,final @NotNull LocalDate birthDate,final @NotNull Address address) {
+    public static Client create(final UUID id,final @NotNull String name,final @NotNull String email,final @NotNull String phone,final @NotNull LocalDate birthDate,final @Nullable Address address) {
         UUID newId = (id == null)?UUID.randomUUID():id;
         validateFields(name, email, phone, birthDate);
         return new Client(newId, name, email, phone, birthDate, address);
@@ -54,12 +55,12 @@ public final class Client {
     }
 
     private static void validateFields(final String name,final String email,final String phone,final LocalDate birthDate) {
-        LocalDate dateNow = LocalDate.now();
-        if (name.isBlank()) throw new IllegalArgumentException("Name cannot be empty");
-        else if (email.isBlank()) throw new IllegalArgumentException("Email cannot be empty");
-        else if (phone.isBlank()) throw new IllegalArgumentException("Phone cannot be empty");
-        else if (birthDate.isAfter(dateNow)) throw new IllegalArgumentException("Birth date cannot be in the future.");
-        else if (Period.between(birthDate, dateNow).getYears() <= 10) throw new IllegalArgumentException("User must be older than 10 years.");
+        Validator.requireNonBlank(name, "Name");
+        Validator.requireNonBlank(email, "Email");
+        Validator.requireNonBlank(phone, "Phone");
+        Validador.requireNotFuture(birthDate, "Birth date");
+        Validator.requireMinimumAge(birthDate, 10, "Birth date")
+        
     }
 
     @Override

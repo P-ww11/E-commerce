@@ -1,18 +1,20 @@
 package com.Ecommerce.model;
 
 import static java.util.Collections.unmodifiableSet;
-import java.util.HashSet;
 import static java.util.Objects.*;
-import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
+import java.math.BigDecimal;
 
-import jakarta.validation.constraints.NotNull;
+
 
 public final class Cart {
     
     private final UUID id;
     private final Client client;
-    private final Set<ProductItem> items = new HashSet<>();
+    private final Map<Product, Integer> items = new HashMap<>();
 
     private Cart(final UUID id,final Client client){
         this.id = id;
@@ -28,30 +30,40 @@ public final class Cart {
         return this.id;
     }
 
-    public Client getUser() {
+    public Client getClient() {
         return this.client;
     }
 
-    public boolean add(@NotNull ProductItem item){
-        return this.items.add(item);
+    public void put(@NotNull Product item, int newQuantity){
+        Validator.requireInRage(newQuantity, 0, 100, "quantity");
+        int quantity = items.getOrDefault(item, 0);
+        this.items.put(item,quantity + newQuantity);
+    }
+    public void put(@NotNull Product item){
+        int quantity = items.getOrDefault(item, 0);
+        this.items.put(item, quantity + 1);
     }
 
-    public Set<ProductItem> getItems(){
+
+    public Map<Product, Integer> getItems(){
         if(this.items.isEmpty()){
             throw new IllegalArgumentException("cart is empty");
         }
-        return unmodifiableSet(new HashSet<>(this.items));
+        return Map.copyOf(this.items);
     }
 
-    public boolean remove(@NotNull ProductItem item){
-       return this.items.remove(item);
+    public boolean remove(@NotNull Product item){
+       return this.items.remove(item) != null;
+    }
+    public BigDecimal subTotal(){
+        return this.getItems().entrySet().stream()
+        .map(entry -> entry.getKey().getPrice().multiply(BigDecimal.valueOf(entry.getValue())))
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void chargeQuantity(@NotNull ProductItem product, int newQuantity){
-        if (newQuantity <= 0) throw new IllegalArgumentException("Quantity must be greater than 0");
-        ProductItem newProduct = this.items.stream().filter(x -> x.equals(product)).findFirst().orElseThrow(() -> new IllegalArgumentException("Product not found in cart"));
-        newProduct.setQuantity(newQuantity);
-        this.add(newProduct);
+    public void chargeQuantity(@NotNull Product product, int newQuantity){
+        Validator.requirePositive(newQuantity, "quantity");
+        this.put(product, newQuantity);
     }
 
     public void clear(){
