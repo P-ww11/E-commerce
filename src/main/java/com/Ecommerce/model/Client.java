@@ -8,14 +8,19 @@ import org.jetbrains.annotations.Nullable;
 
 public final class Client {
 
-    private final UUID id;
-    private final String name;
-    private final String email;
-    private final String phone;
-    private final LocalDate birthDate;
-    private final Address address;
+    public static Client create(final @Nullable UUID id,final @NotNull String name,final @NotNull String email,final @NotNull String phone,final @NotNull LocalDate birthDate,final @Nullable Address address) {
+        UUID newId = (id == null)?UUID.randomUUID():id;
+        validateFields(name, email, phone, birthDate);
+        return new Client(newId, name, email, phone, birthDate, address);
+    }
+    private final @NotNull UUID id;
+    private final @NotNull String name;
+    private final @NotNull String email;
+    private final @NotNull String phone;
+    private final @NotNull LocalDate birthDate;
+    private @Nullable Address address;
 
-    private Client(final UUID id,final String name,final String email,final String phone,final LocalDate birthDate,final Address address) {
+    private Client(final @NotNull UUID id,final @NotNull String name,final @NotNull String email,final @NotNull String phone,final @NotNull LocalDate birthDate,final @Nullable Address address) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -23,38 +28,36 @@ public final class Client {
         this.birthDate = birthDate;
         this.address = address;
     }
-    public static Client create(final UUID id,final @NotNull String name,final @NotNull String email,final @NotNull String phone,final @NotNull LocalDate birthDate,final @Nullable Address address) {
-        UUID newId = (id == null)?UUID.randomUUID():id;
-        validateFields(name, email, phone, birthDate);
-        return new Client(newId, name, email, phone, birthDate, address);
-    }
 
 
-    public UUID getId() {
+    public @NotNull UUID getId() {
         return this.id;
     }
 
-    public String getName() {
+    public @NotNull String getName() {
         return this.name;
     }
 
-    public String getEmail() {
+    public @NotNull String getEmail() {
         return this.email;
     }
 
-    public String getPhone() {
+    public @NotNull String getPhone() {
         return this.phone;
     }
 
-    public LocalDate getBirthDate() {
+    public @NotNull LocalDate getBirthDate() {
         return this.birthDate;
     }
 
-    public Address getAddress() {
+    public @Nullable Address getAddress() {
         return this.address;
     }
+    public void setAddress(@NotNull Address address){
+        this.address = address;
+    }
 
-    private static void validateFields(final String name,final String email,final String phone,final LocalDate birthDate) {
+    private static void validateFields(final @NotNull String name,final @NotNull String email,final @NotNull String phone,final @NotNull LocalDate birthDate) {
         Validator.requireNonBlank(name, "Name");
         Validator.requireNonBlank(email, "Email");
         Validator.requireNonBlank(phone, "Phone");
@@ -64,7 +67,7 @@ public final class Client {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "Client{" +
                 "id=" + this.id +
                 ", name='" + this.name + '\'' +

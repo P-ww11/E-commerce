@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface Category{
 
-    UUID getId();
-    String getName();
-    String getDescription();
+    @NotNull UUID getId();
+    @NotNull String getName();
+    @NotNull String getDescription();
 }

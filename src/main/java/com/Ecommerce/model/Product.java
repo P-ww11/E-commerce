@@ -9,13 +9,19 @@ import org.jetbrains.annotations.NotNull;
 
 
 public final class Product{
-    private final UUID id;
-    private final String name;
-    private final String description;
-    private final BigDecimal price;
-    private final Category category;
+    
+    public static Product create(final @Nullable UUID id,final @NotNull String name,final @NotNull String description,final @NotNull BigDecimal price, final @NotNull Category category){
+        UUID newId = (id == null)? UUID.randomUUID():id;
+        validateFields(name,description,price);
+        return new Product(newId,name,description,price, category);
+    }
+    private final @NotNull UUID id;
+    private final @NotNull String name;
+    private final @NotNull String description;
+    private final @NotNull BigDecimal price;
+    private final @NotNull Category category;
 
-    private Product(final UUID id,final String name,final String description,final BigDecimal price,final Category category){
+    private Product(final @NotNull UUID id,final @NotNull String name,final @NotNull String description,final @NotNull BigDecimal price,final @NotNull Category category){
         this.id = id;
         this.name = name;
         this.description = description;
@@ -23,26 +29,21 @@ public final class Product{
         this.category = category;
     }
 
-    public static Product create(final UUID id,final @NotNull String name,final @NotNull String description,final @NotNull BigDecimal price, final @NotNull Category category){
-        UUID newId = (id == null)? UUID.randomUUID():id;
-        validateFields(name,description,price);
-        return new Product(newId,name,description,price, category);
-    }
 
-    public UUID getId(){
+    public @NotNull UUID getId(){
         return this.id;
     }
-    public String getName(){
+    public @NotNull String getName(){
         return this.name;
     }
-    public String getDescription(){
+    public @NotNull String getDescription(){
         return this.description;
     }
-    public BigDecimal getPrice(){
+    public @NotNull BigDecimal getPrice(){
         return this.price;
     }
 
-    private static void validateFields(final String name,final String description,final BigDecimal price){
+    private static void validateFields(final @NotNull String name,final @NotNull String description,final @NotNull BigDecimal price){
         Validator.requireMinLength(name, 4,"Name");
         Validator.requireMinLength(description, 6, "Description");
         Validator.requireInRange(price, BigDecimal.ZERO,BigDecimal.valueOf(9999), "Price");
@@ -62,7 +63,7 @@ public final class Product{
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "Product{" +
                "id=" + this.id +
                ", name='" + this.name + '\'' +

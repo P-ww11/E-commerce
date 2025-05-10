@@ -5,14 +5,17 @@ import org.jetbrains.annotations.NotNull;
 
 public final class Address {
 
-    private final String country;
-    private final String region;
-    private final String acronym;
-    private final String city;
-    private final String streetName;
-    private final String streetNumber;
+    public static @NotNull Builder builder() {
+        return new Builder();
+    }
+    private final @NotNull String country;
+    private final @NotNull String region;
+    private final @NotNull String acronym;
+    private final @NotNull String city;
+    private final @NotNull String streetName;
+    private final @NotNull String streetNumber;
 
-    private Address(Builder builder) {
+    private Address(final @NotNull Builder builder) {
         this.country = builder.country;
         this.region = builder.region;
         this.acronym = builder.acronym;
@@ -21,36 +24,33 @@ public final class Address {
         this.streetNumber = builder.streetNumber;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
 
-    public String getCountry() {
+    public @NotNull String getCountry() {
         return this.country;
     }
 
-    public String getRegion() {
+    public @NotNull String getRegion() {
         return this.region;
     }
 
-    public String getAcronym() {
+    public @NotNull String getAcronym() {
         return this.acronym;
     }
 
-    public String getCity() {
+    public @NotNull String getCity() {
         return this.city;
     }
 
-    public String getStreetName() {
+    public @NotNull String getStreetName() {
         return this.streetName;
     }
 
-    public String getStreetNumber() {
+    public @NotNull String getStreetNumber() {
         return this.streetNumber;
     }
 
-    private static void validateFields(final String country, final String region, final String acronym,
-                                       final String city, final String streetName, final String streetNumber) {
+    private static void validateFields(final @NotNull String country, final @NotNull String region, final @NotNull String acronym,
+                                       final @NotNull String city, final @NotNull String streetName, final @NotNull String streetNumber) {
         Validator.requireNonBlank(country, "Country");
         Validator.requireNonBlank(region, "Region");
         Validator.requireNonBlank(acronym, "Acronym");
@@ -60,48 +60,49 @@ public final class Address {
     }
 
     public static class Builder {
-        private String country;
-        private String region;
-        private String acronym;
-        private String city;
-        private String streetName;
-        private String streetNumber;
+        private @NotNull String country;
+        private @NotNull String region;
+        private @NotNull String acronym;
+        private @NotNull String city;
+        private @NotNull String streetName;
+        private @NotNull String streetNumber;
 
-        public Builder country(String country) {
+        public @NotNull Builder country(@NotNull String country) {
             this.country = country;
             return this;
         }
 
-        public Builder region(String region) {
+        public @NotNull Builder region(@NotNull String region) {
             this.region = region;
             return this;
         }
 
-        public Builder acronym(String acronym) {
+        public @NotNull Builder acronym(@NotNull String acronym) {
             this.acronym = acronym;
             return this;
         }
 
-        public Builder city(String city) {
+        public @NotNull Builder city(@NotNull String city) {
             this.city = city;
             return this;
         }
 
-        public Builder streetName(String streetName) {
+        public @NotNull Builder streetName(@NotNull String streetName) {
             this.streetName = streetName;
             return this;
         }
 
-        public Builder streetNumber(String streetNumber) {
+        public @NotNull Builder streetNumber(@NotNull String streetNumber) {
             this.streetNumber = streetNumber;
             return this;
         }
-
-        public Address build() {
+        public @NotNull Address build() {
             validateFields(country, region, acronym, city, streetName, streetNumber);
             return new Address(this);
         }
+
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -122,7 +123,7 @@ public final class Address {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "Address{" +
                 "country='" + this.country + '\'' +
                 ", region='" + this.region + '\'' +

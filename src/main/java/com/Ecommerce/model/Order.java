@@ -10,40 +10,37 @@ import org.jetbrains.annotations.NotNull;
 
 public final class Order{
 
-    private final UUID id;
-    private final Set<Product> items;
-    private final Address address;
-    private final Client client;
-    
-
-    private Order(final UUID id,final Cart cart,final Address address,final Client client){
-        this.id = id;
-        this.address = address;
-        this.client = client;
-        this.items = new HashSet<>(cart.getItems().keySet());
-    }
-
-    public static Order create(final UUID id,final @NotNull Cart cart,final @NotNull Address address,final @NotNull Client client){
+    public static @NotNull Order create(final @Nullable UUID id,final @NotNull Cart cart,final @NotNull Address address,final @NotNull Client client){
         UUID newId = (id == null)? UUID.randomUUID(): id;
         return new Order(newId, cart, address, client);
     }
+    private final @NotNull UUID id;
+    private final @NotNull Set<ProductItem> items;
+    private final @NotNull Address address;
+    private final @NotNull Client client;
+    
 
-    public UUID getId() {
+    private Order(final @NotNull UUID id,final @NotNull Cart cart,final @NotNull Address address,final @NotNull Client client){
+        this.id = id;
+        this.address = address;
+        this.client = client;
+        this.items = new HashSet<>(cart.toCollection());
+    }
+
+
+    public @NotNull UUID getId() {
         return this.id;
     }
 
-    public Address getAddress() {
+    public @NotNull Address getAddress() {
         return this.address;
     }
 
-    public Client getClient() {
+    public @NotNull Client getClient() {
         return this.client;
     }
 
-    public Set<Product> getItems(){
-        if(this.items.isEmpty()){
-            throw new IllegalArgumentException("order is empty");
-        }
+    public @NotNull Set<Product> getItems(){
         return unmodifiableSet(new HashSet<>(this.items));
     }
 
@@ -61,7 +58,7 @@ public final class Order{
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "Order{" +
                 "id=" + this.id +
                 ", items=" + this.items +
