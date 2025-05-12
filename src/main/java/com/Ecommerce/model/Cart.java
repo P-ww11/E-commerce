@@ -17,7 +17,7 @@ public final class Cart {
 
     private static final int MAX_QUANTITY = 100;
 
-    public static Cart create(@Nullable UUID id, @NotNull Client client) {
+    public static @NotNull Cart create(@Nullable UUID id, @NotNull Client client) {
         UUID newId = (id == null) ? UUID.randomUUID() : id;
         return new Cart(newId, client);
     }
@@ -60,7 +60,7 @@ public final class Cart {
         return Map.copyOf(this.items);
     }
 
-    public Map<String, Object> summary() {
+    public @NotNull Map<String, Object> summary() {
         List<Map<String, Object>> products = this.items.entrySet()
                 .stream()
                 .map(e -> Map.of(
