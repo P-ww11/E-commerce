@@ -1,22 +1,20 @@
-package com.Ecommerce.model;
+package com.ecommerce.model;
 
 import java.util.Objects;
-import jakarta.validation.constraints.NotNull;
+import org.jetbrains.annotations.NotNull;
 
-public final class ProductItem {
+import com.ecommerce.utils.Validator;
 
-    public static ProductItem create(final @NotNull Product product, final int quantity) {
-        validateFields(quantity);
-        return new ProductItem(product, quantity);
-    }
+class ProductItem {
+
     private final @NotNull Product product;
     private final int quantity;
 
-    private ProductItem(final @NotNull Product product, final int quantity) {
+    public ProductItem(@NotNull Product product, int quantity) {
+        Validator.requirePositive(quantity, "Quantity");
         this.product = product;
         this.quantity = quantity;
     }
-
 
     public @NotNull Product getProduct() {
         return this.product;
@@ -24,10 +22,6 @@ public final class ProductItem {
 
     public int getQuantity() {
         return this.quantity;
-    }
-
-    private static void validateFields(final int quantity) {
-        Validator.requirePositive(quantity, "Quantity");
     }
 
     @Override
@@ -42,8 +36,8 @@ public final class ProductItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ProductItem)) return false;
-        ProductItem that = (this) o;
-        return quantity == that.quantity &&
+        ProductItem that = (ProductItem) o;
+        return this.quantity == that.quantity &&
                Objects.equals(this.product, that.product);
     }
 

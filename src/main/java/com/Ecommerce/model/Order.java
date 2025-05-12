@@ -1,32 +1,49 @@
-package com.Ecommerce.model;
+package com.ecommerce.model;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 import static java.util.Collections.unmodifiableSet;
-import java.util.HashSet;
 import static java.util.Objects.hash;
-import java.util.Set;
-import java.util.UUID;
-import org.jetbrains.annotations.NotNull;
 
+public final class Order {
 
-public final class Order{
+    public static @NotNull Order create(@Nullable UUID id,
+                                        @NotNull Cart cart,
+                                        @NotNull Address address,
+                                        @NotNull Client client,
+                                        @Nullable List<Discount> discounts,
+                                        @NotNull Payment payment) {
 
-    public static @NotNull Order create(final @Nullable UUID id,final @NotNull Cart cart,final @NotNull Address address,final @NotNull Client client){
-        UUID newId = (id == null)? UUID.randomUUID(): id;
-        return new Order(newId, cart, address, client);
+        UUID newId = (id == null) ? UUID.randomUUID() : id;
+        Validator.validateCollection(cart.toCollection());
+        return new Order(newId, cart, address, client, discounts, payment);
     }
+
     private final @NotNull UUID id;
     private final @NotNull Set<ProductItem> items;
     private final @NotNull Address address;
     private final @NotNull Client client;
-    
+    private final @Nullable List<Discount> discounts;
+    private final @NotNull Payment payment;
 
-    private Order(final @NotNull UUID id,final @NotNull Cart cart,final @NotNull Address address,final @NotNull Client client){
+    private Order(@NotNull UUID id,
+                  @NotNull Cart cart,
+                  @NotNull Address address,
+                  @NotNull Client client,
+                  @Nullable List<Discount> discounts,
+                  @NotNull Payment payment) {
+
         this.id = id;
         this.address = address;
         this.client = client;
         this.items = new HashSet<>(cart.toCollection());
+        this.discounts = discounts != null ? new ArrayList<>(discounts) : null;
+        this.payment = payment;
     }
-
 
     public @NotNull UUID getId() {
         return this.id;
@@ -40,8 +57,16 @@ public final class Order{
         return this.client;
     }
 
-    public @NotNull Set<Product> getItems(){
+    public @NotNull Set<ProductItem> getItems() {
         return unmodifiableSet(new HashSet<>(this.items));
+    }
+
+    public @Nullable List<Discount> getDiscounts() {
+        return this.discounts != null ? Collections.unmodifiableList(this.discounts) : null;
+    }
+
+    public @NotNull Payment getPayment() {
+        return this.payment;
     }
 
     @Override
@@ -60,10 +85,11 @@ public final class Order{
     @Override
     public @NotNull String toString() {
         return "Order{" +
-                "id=" + this.id +
-                ", items=" + this.items +
-                ", address=" + this.address +
-                ", client=" + this.client +
-                '}';
+               "id=" + this.id +
+               ", items=" + this.items +
+               ", address=" + this.address +
+               ", client=" + this.client +
+               ", payment=" + this.payment +
+               '}';
     }
 }

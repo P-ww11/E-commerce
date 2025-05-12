@@ -1,13 +1,33 @@
-package com.Ecommerce.model;
+package com.ecommerce.model;
+
+import com.ecommerce.utils.Validator;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 import static java.util.Objects.hash;
-import org.jetbrains.annotations.NotNull;
 
 public final class Address {
 
     public static @NotNull Builder builder() {
         return new Builder();
     }
+
+    private static void validateFields(@NotNull String country,
+                                       @NotNull String region,
+                                       @NotNull String acronym,
+                                       @NotNull String city,
+                                       @NotNull String streetName,
+                                       @NotNull String streetNumber) {
+
+        Validator.requireNonBlank(country, "Country");
+        Validator.requireNonBlank(region, "Region");
+        Validator.requireNonBlank(acronym, "Acronym");
+        Validator.requireNonBlank(city, "City");
+        Validator.requireNonBlank(streetName, "Street name");
+        Validator.requireNonBlank(streetNumber, "Street number");
+    }
+
     private final @NotNull String country;
     private final @NotNull String region;
     private final @NotNull String acronym;
@@ -15,7 +35,7 @@ public final class Address {
     private final @NotNull String streetName;
     private final @NotNull String streetNumber;
 
-    private Address(final @NotNull Builder builder) {
+    private Address(@NotNull Builder builder) {
         this.country = builder.country;
         this.region = builder.region;
         this.acronym = builder.acronym;
@@ -24,42 +44,32 @@ public final class Address {
         this.streetNumber = builder.streetNumber;
     }
 
-
     public @NotNull String getCountry() {
-        return this.country;
+        return country;
     }
 
     public @NotNull String getRegion() {
-        return this.region;
+        return region;
     }
 
     public @NotNull String getAcronym() {
-        return this.acronym;
+        return acronym;
     }
 
     public @NotNull String getCity() {
-        return this.city;
+        return city;
     }
 
     public @NotNull String getStreetName() {
-        return this.streetName;
+        return streetName;
     }
 
     public @NotNull String getStreetNumber() {
-        return this.streetNumber;
+        return streetNumber;
     }
 
-    private static void validateFields(final @NotNull String country, final @NotNull String region, final @NotNull String acronym,
-                                       final @NotNull String city, final @NotNull String streetName, final @NotNull String streetNumber) {
-        Validator.requireNonBlank(country, "Country");
-        Validator.requireNonBlank(region, "Region");
-        Validator.requireNonBlank(acronym, "Acronym");
-        Validator.requireNonBlank(city, "City");
-        Validator.requireNonBlank(streetName, "StreetName");
-        Validator.requireNonBlank(streetNumber, "StreetNumber");
-    }
+    public static final class Builder {
 
-    public static class Builder {
         private @NotNull String country;
         private @NotNull String region;
         private @NotNull String acronym;
@@ -96,41 +106,40 @@ public final class Address {
             this.streetNumber = streetNumber;
             return this;
         }
+
         public @NotNull Address build() {
             validateFields(country, region, acronym, city, streetName, streetNumber);
             return new Address(this);
         }
-
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Address)) return false;
         Address address = (Address) o;
-        return this.country.equals(address.country) &&
-               this.region.equals(address.region) &&
-               this.acronym.equals(address.acronym) &&
-               this.city.equals(address.city) &&
-               this.streetName.equals(address.streetName) &&
-               this.streetNumber.equals(address.streetNumber);
+        return country.equals(address.country) &&
+               region.equals(address.region) &&
+               acronym.equals(address.acronym) &&
+               city.equals(address.city) &&
+               streetName.equals(address.streetName) &&
+               streetNumber.equals(address.streetNumber);
     }
 
     @Override
     public int hashCode() {
-        return hash(this.country, this.region, this.acronym, this.city, this.streetName, this.streetNumber);
+        return hash(country, region, acronym, city, streetName, streetNumber);
     }
 
     @Override
     public @NotNull String toString() {
         return "Address{" +
-                "country='" + this.country + '\'' +
-                ", region='" + this.region + '\'' +
-                ", acronym='" + this.acronym + '\'' +
-                ", city='" + this.city + '\'' +
-                ", streetName='" + this.streetName + '\'' +
-                ", streetNumber='" + this.streetNumber + '\'' +
-                '}';
+               "country='" + country + '\'' +
+               ", region='" + region + '\'' +
+               ", acronym='" + acronym + '\'' +
+               ", city='" + city + '\'' +
+               ", streetName='" + streetName + '\'' +
+               ", streetNumber='" + streetNumber + '\'' +
+               '}';
     }
 }

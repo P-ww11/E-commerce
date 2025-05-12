@@ -1,4 +1,11 @@
-public final class ValidatorField{
+package com.Ecommerce.utils;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+
+public final class Validator{
 
      private Validator() {
         throw new UnsupportedOperationException("Validator is a utility class and cannot be instantiated");
@@ -49,6 +56,34 @@ public final class ValidatorField{
     public static void requireInRange(BigDecimal value, BigDecimal min, BigDecimal max, String fieldName) {
         if (value == null || value.compareTo(min) <= 0 || value.compareTo(max) > 0) {
             throw new IllegalArgumentException(fieldName + " must be greater than " + min + " and less than or equal to " + max);
+        }
+    }
+    public static void requireInRange(BigDecimal value, String fieldName){
+        if(value.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException(fieldName + " must be greater than zero.");
+        }
+    }
+
+    public static void validateFutureDate(LocalDate date, String fieldName) {
+        if (date == null) {
+            throw new IllegalArgumentException(fieldName + " cannot be null.");
+        }
+        if (date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException(fieldName + " must be a future date. Provided date: " + date + " is in the past.");
+        }
+    }
+    public static void validateFutureDate(LocalDateTime date, String fieldName){
+        if (date == null) {
+            throw new IllegalArgumentException(fieldName + " cannot be null.");
+        }
+        if (date.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException(fieldName + " must be a future date. Provided date: " + date + " is in the past.");
+        }
+    }
+
+    public static void validateCollection(Collection<?> collection) {
+        if (collection.isEmpty()) {
+            throw new IllegalArgumentException("The collection cannot be empty;");
         }
     }
 }

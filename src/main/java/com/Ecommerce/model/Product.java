@@ -1,27 +1,49 @@
-package com.Ecommerce.model;
+package com.ecommerce.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 import java.util.UUID;
 
-import static java.util.Objects.hash;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import com.ecommerce.utils.Validator;
 
-public final class Product{
-    
-    public static Product create(final @Nullable UUID id,final @NotNull String name,final @NotNull String description,final @NotNull BigDecimal price, final @NotNull Category category){
-        UUID newId = (id == null)? UUID.randomUUID():id;
-        validateFields(name,description,price);
-        return new Product(newId,name,description,price, category);
+public final class Product {
+
+    public static @NotNull Product create(@Nullable UUID id,
+                                          @NotNull String name,
+                                          @NotNull String description,
+                                          @NotNull BigDecimal price,
+                                          @NotNull Category category) {
+
+        UUID newId = (id == null) ? UUID.randomUUID() : id;
+        validateFields(name, description, price);
+        return new Product(newId, name, description, price, category);
     }
+
+    private static void validateFields(@NotNull String name,
+                                       @NotNull String description,
+                                       @NotNull BigDecimal price) {
+
+        Validator.requireMinLength(name, 4, "Name");
+        Validator.requireMinLength(description, 6, "Description");
+        Validator.requireInRange(price, BigDecimal.ZERO, BigDecimal.valueOf(9999), "Price");
+    }
+
     private final @NotNull UUID id;
     private final @NotNull String name;
     private final @NotNull String description;
     private final @NotNull BigDecimal price;
     private final @NotNull Category category;
 
-    private Product(final @NotNull UUID id,final @NotNull String name,final @NotNull String description,final @NotNull BigDecimal price,final @NotNull Category category){
+    private Product(@NotNull UUID id,
+                    @NotNull String name,
+                    @NotNull String description,
+                    @NotNull BigDecimal price,
+                    @NotNull Category category) {
+
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,37 +51,37 @@ public final class Product{
         this.category = category;
     }
 
-
-    public @NotNull UUID getId(){
+    public @NotNull UUID getId() {
         return this.id;
     }
-    public @NotNull String getName(){
+
+    public @NotNull String getName() {
         return this.name;
     }
-    public @NotNull String getDescription(){
+
+    public @NotNull String getDescription() {
         return this.description;
     }
-    public @NotNull BigDecimal getPrice(){
+
+    public @NotNull BigDecimal getPrice() {
         return this.price;
     }
 
-    private static void validateFields(final @NotNull String name,final @NotNull String description,final @NotNull BigDecimal price){
-        Validator.requireMinLength(name, 4,"Name");
-        Validator.requireMinLength(description, 6, "Description");
-        Validator.requireInRange(price, BigDecimal.ZERO,BigDecimal.valueOf(9999), "Price");
+    public @NotNull Category getCategory() {
+        return this.category;
     }
 
-     @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Product)) return false;
         Product product = (Product) o;
         return this.id.equals(product.id);
     }
 
     @Override
     public int hashCode() {
-        return hash(this.id);
+        return Objects.hash(this.id);
     }
 
     @Override
