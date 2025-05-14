@@ -41,18 +41,15 @@ public final class Discount {
         return !expirationDate.isBefore(LocalDate.now());
     }
 
-    public @NotNull BigDecimal applyDiscount(@NotNull BigDecimal price) {
-        if (!isValid()) {
-            return price;
-        }
+    public @NotNull BigDecimal calculateDiscount(@NotNull BigDecimal price) {
+
+        if (!isValid()) return Bigdecimal.ZERO;
 
         BigDecimal discount = price.multiply(percentage.divide(BigDecimal.valueOf(100)));
 
-        if (discount.compareTo(price) >= 0) {
-            return BigDecimal.ZERO;
-        }
+        if (discount.compareTo(price) >= 0) return BigDecimal.ZERO;
 
-        return price.subtract(discount);
+        return discount;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.ecommerce.model;
+package com.Ecommerce.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.ecommerce.utils.Validator;
+import com.Ecommerce.utils.Validator;
 
 public final class Product {
 

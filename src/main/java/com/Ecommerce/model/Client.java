@@ -1,6 +1,6 @@
-package com.ecommerce.model;
+package com.Ecommerce.model;
 
-import com.ecommerce.utils.Validator;
+import com.Ecommerce.utils.Validator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

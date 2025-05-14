@@ -4,18 +4,16 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Collection;
 
 public final class Validator{
-
-     private Validator() {
-        throw new UnsupportedOperationException("Validator is a utility class and cannot be instantiated");
-    }
 
     public static void requireNonBlank(String value, String name) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException(name + " cannot be blank");
         }
     }
+
     public static void requirePositive(int value, String name) {
         if (value <= 0) {
             throw new IllegalArgumentException(name + " must be greater than 0");
@@ -32,7 +30,8 @@ public final class Validator{
         if (date == null) {
             throw new IllegalArgumentException(fieldName + " cannot be null");
         }
-        if (date.isAfter(LocalDate.now())) {
+
+        else if (date.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException(fieldName + " cannot be in the future");
         }
     }
@@ -41,7 +40,9 @@ public final class Validator{
         if (birthDate == null) {
             throw new IllegalArgumentException(fieldName + " cannot be null");
         }
+
         int age = Period.between(birthDate, LocalDate.now()).getYears();
+
         if (age < minimumAge) {
             throw new IllegalArgumentException("User must be at least " + minimumAge + " years old");
         }
@@ -58,9 +59,10 @@ public final class Validator{
             throw new IllegalArgumentException(fieldName + " must be greater than " + min + " and less than or equal to " + max);
         }
     }
+
     public static void requireInRange(BigDecimal value, String fieldName){
         if(value.compareTo(BigDecimal.ZERO) <= 0){
-            throw new IllegalArgumentException(fieldName + " must be greater than zero.");
+            throw new IllegalArgumentException(fieldName + " must be greater than 0.");
         }
     }
 
@@ -68,15 +70,18 @@ public final class Validator{
         if (date == null) {
             throw new IllegalArgumentException(fieldName + " cannot be null.");
         }
-        if (date.isBefore(LocalDate.now())) {
+
+        else if (date.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException(fieldName + " must be a future date. Provided date: " + date + " is in the past.");
         }
     }
+
     public static void validateFutureDate(LocalDateTime date, String fieldName){
         if (date == null) {
             throw new IllegalArgumentException(fieldName + " cannot be null.");
         }
-        if (date.isBefore(LocalDateTime.now())) {
+
+        else if (date.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException(fieldName + " must be a future date. Provided date: " + date + " is in the past.");
         }
     }
@@ -86,4 +91,9 @@ public final class Validator{
             throw new IllegalArgumentException("The collection cannot be empty;");
         }
     }
+
+    private Validator() {
+        throw new UnsupportedOperationException("Validator is a utility class and cannot be instantiated");
+    }
+
 }

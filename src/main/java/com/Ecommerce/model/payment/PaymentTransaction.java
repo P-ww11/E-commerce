@@ -1,4 +1,4 @@
-package com.ecommerce.model;
+package com.Ecommerce.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,13 +8,13 @@ import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.ecommerce.utils.Validator;
+import com.Ecommerce.utils.Validator;
 
-public final class Payment {
+public final class PaymentTransaction {
 
-    public static @NotNull Payment create(@Nullable UUID id,
+    public static @NotNull PaymentTransaction create(@Nullable UUID id,
                                           @NotNull BigDecimal amount,
-                                          @NotNull String currency,
+                                          @NotNull Currency currency,
                                           @NotNull LocalDateTime paymentDate,
                                           @NotNull Status status
                                           ) {
@@ -24,12 +24,11 @@ public final class Payment {
     }
 
     private static void validateFields(@NotNull BigDecimal amount,
-                                       @NotNull String currency,
+                                       @NotNull Currency currency,
                                        @NotNull LocalDateTime paymentDate,
                                        @NotNull Status status) {
 
         Validator.requireInRange(amount, "amount");
-        Validator.requireNonBlank(currency, "currency");
         Validator.validateFutureDate(paymentDate, "payment_date");
 
         if (!Status.isValid(status.getCode())) {
@@ -39,12 +38,17 @@ public final class Payment {
 
     private final @NotNull UUID id;
     private final @NotNull BigDecimal amount;
-    private final @NotNull String currency;
+    private final @NotNull Currency currency;
     private final @NotNull LocalDateTime paymentDate;
     private final @NotNull Status status;
 
-    private Payment(@NotNull UUID id, @NotNull BigDecimal amount, @NotNull String currency,
-                    @NotNull LocalDateTime paymentDate, @NotNull Status status) {
+    private PaymentTransaction(
+        @NotNull UUID id,
+        @NotNull BigDecimal amount, 
+        @NotNull Currency currency,
+        @NotNull LocalDateTime paymentDate, 
+        @NotNull Status status) {
+        
         this.id = id;
         this.amount = amount;
         this.currency = currency;
@@ -60,7 +64,7 @@ public final class Payment {
         return this.amount;
     }
 
-    public @NotNull String getCurrency() {
+    public @NotNull Currency getCurrency() {
         return this.currency;
     }
 

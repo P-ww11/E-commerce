@@ -1,9 +1,9 @@
-package com.ecommerce.model;
+package com.Ecommerce.model;
 
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
-import com.ecommerce.utils.Validator;
+import com.Ecommerce.utils.Validator;
 
 class ProductItem {
 

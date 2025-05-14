@@ -1,8 +1,7 @@
-package com.ecommerce.model;
+package com.Ecommerce.model;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.ecommerce.utils.Validator;
+import com.Ecommerce.utils.Validator;
 
 public final class Cart {
 
@@ -55,24 +54,7 @@ public final class Cart {
     public void put(@NotNull Product item) {
         this.put(item, 1);
     }
-
-    public @NotNull Map<Product, Integer> getItems() {
-        return Map.copyOf(this.items);
-    }
-
-    public @NotNull Map<String, Object> summary() {
-        List<Map<String, Object>> products = this.items.entrySet()
-                .stream()
-                .map(e -> Map.of(
-                        "product-name", e.getKey().getName(),
-                        "quantity", e.getValue(),
-                        "price", e.getKey().getPrice()
-                ))
-                .toList();
-
-        return Map.of("items", products);
-    }
-
+    
     public boolean remove(@NotNull Product item) {
         return this.items.remove(item) != null;
     }
